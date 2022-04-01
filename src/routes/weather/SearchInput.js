@@ -9,13 +9,11 @@ const SearchInput = ({
 }) => {
   return (
     <div className="mb-3">
-      <label htmlFor={name} className="form-label d-none">
-        Email address
-      </label>
+      <label htmlFor={name + "Input"} className="form-label d-none"></label>
       <input
         type="text"
         className={`form-control ${visbility}`}
-        id={name}
+        id={name + "Input"}
         name={name}
         placeholder={placeHolder}
         value={value}

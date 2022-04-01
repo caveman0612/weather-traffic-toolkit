@@ -1,29 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import SearchInput from "./SearchInput";
 
-const SearchField = () => {
-  const _initialFormState = {
-    type: "",
-    city: "",
-    state: "",
-    lat: "",
-    lon: "",
-    zip: "",
-  };
+const SearchField = ({
+  formData,
+  searchType,
+  searchChangeHandler,
+  changeHandler,
+  handleSubmit,
+}) => {
   let formInputs = null;
-  const [formData, setFormData] = useState(_initialFormState);
-  const [searchType, setSearchType] = useState("");
-
-  function formChangeHandler(event) {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  }
-
-  function searchChangeHandler(event) {
-    const value = event.target.value;
-    setFormData(_initialFormState);
-    setSearchType(value);
-  }
-
   if (searchType === "city/state") {
     formInputs = (
       <>
@@ -31,13 +16,13 @@ const SearchField = () => {
           name={"city"}
           placeHolder={"Input City"}
           value={formData.city}
-          changeHandler={formChangeHandler}
+          changeHandler={changeHandler}
         />
         <SearchInput
           name={"state"}
           placeHolder={"Input State"}
           value={formData.state}
-          changeHandler={formChangeHandler}
+          changeHandler={changeHandler}
         />
       </>
     );
@@ -48,7 +33,7 @@ const SearchField = () => {
           name={"zip"}
           placeHolder={"Input Zip Code"}
           value={formData.zip}
-          changeHandler={formChangeHandler}
+          changeHandler={changeHandler}
         />
       </>
     );
@@ -59,13 +44,13 @@ const SearchField = () => {
           name={"lat"}
           placeHolder={"Input Latitude"}
           value={formData.lat}
-          changeHandler={formChangeHandler}
+          changeHandler={changeHandler}
         />
         <SearchInput
           name={"lon"}
           placeHolder={"Input longitude"}
           value={formData.lon}
-          changeHandler={formChangeHandler}
+          changeHandler={changeHandler}
         />
       </>
     );
@@ -75,7 +60,7 @@ const SearchField = () => {
         name={"null"}
         placeHolder={"null"}
         value={formData.type}
-        changeHandler={formChangeHandler}
+        changeHandler={changeHandler}
         visbility={"invisible"}
       />
     );
@@ -89,7 +74,9 @@ const SearchField = () => {
         <option value="zip">Zip Code</option>
         <option value="lat/lon">Lat & Lon</option>
       </select>
-      <form className="d-flex mt-3">{formInputs}</form>
+      <form onSubmit={handleSubmit} className="d-flex mt-3">
+        {formInputs}
+      </form>
     </div>
   );
 };
