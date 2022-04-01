@@ -30,17 +30,18 @@ const Weather = () => {
   }
 
   function handleSubmit(event) {
-    console.log(formData);
+    console.log(formData, searchType);
     event.preventDefault();
-    setSearchObj({ type: searchType, ...formData });
+    setSearchObj({ ...formData, type: searchType });
     setFormData(_initialFormState);
   }
 
   useEffect(() => {
+    // console.log(searchObj);
     if (searchObj) {
       const controller = new AbortController();
-      if (searchObj.type === "city/state") {
-        // console.log("api call", WEATHER_API_KEY);
+      if (searchObj.type === "city") {
+        console.log("api call", WEATHER_API_KEY);
         const cityUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchObj.city}&appid=${WEATHER_API_KEY}`;
         fetch(cityUrl, { signal: controller.signal })
           .then((res) => res.json())
@@ -51,8 +52,12 @@ const Weather = () => {
     }
   }, [searchObj]);
 
+  useEffect(() => {
+    if (!newData.dumby) console.log(newData);
+  }, [newData]);
+
   return (
-    <div className="">
+    <div className="bg-light">
       <SearchField
         formData={formData}
         searchType={searchType}

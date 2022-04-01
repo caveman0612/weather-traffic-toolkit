@@ -11,7 +11,6 @@ const SearchInput = ({
     <div className="mb-3">
       <label htmlFor={name + "Input"} className="form-label d-none"></label>
       <input
-        type="text"
         className={`form-control ${visbility}`}
         id={name + "Input"}
         name={name}

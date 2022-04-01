@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsArrowUp } from "react-icons/bs";
 
 const DashBoard = ({ apiData }) => {
@@ -13,6 +13,9 @@ const DashBoard = ({ apiData }) => {
   };
 
   const [tempData, setTempData] = useState(_initialTempState);
+  useEffect(() => {
+    if (!apiData.dumby) setTempData(_initialTempState);
+  }, [apiData]);
 
   function handleTempChange(event) {
     setTempData({ ..._initialTempState, type: event.target.value });

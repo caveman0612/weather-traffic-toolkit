@@ -1,4 +1,5 @@
 const dumbyData = {
+  dumby: true,
   coord: {
     lon: -122.3321,
     lat: 47.6062,
@@ -13,7 +14,7 @@ const dumbyData = {
   ],
   base: "stations",
   main: {
-    temp: 483.5,
+    temp: 283.5,
     feels_like: 282.55,
     temp_min: 280.11,
     temp_max: 287.35,
