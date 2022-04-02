@@ -3,20 +3,24 @@ import DashBoard from "./DashBoard";
 import SearchField from "./SearchField";
 import { dumbyData } from "../../data";
 import { WEATHER_API_KEY } from "../../passwords";
+// require("dotenv").config();
+
+// import { WEATHER_API_KEY } from "process.env";
+// const { WEATHER_API_KEY } = process.env;
 
 const Weather = () => {
   const _initialFormState = {
     type: "",
     city: "",
-    state: "",
     lat: "",
     lon: "",
     zip: "",
   };
+  // console.log("key", WEATHER_API_KEY);
 
   const [newData, setNewData] = useState(dumbyData);
   const [formData, setFormData] = useState(_initialFormState);
-  const [searchType, setSearchType] = useState("");
+  const [searchType, setSearchType] = useState("city");
   const [searchObj, setSearchObj] = useState(null);
 
   function changeHandler(event) {
@@ -30,31 +34,46 @@ const Weather = () => {
   }
 
   function handleSubmit(event) {
-    console.log(formData, searchType);
+    // console.log(formData, searchType);
     event.preventDefault();
     setSearchObj({ ...formData, type: searchType });
     setFormData(_initialFormState);
   }
 
   useEffect(() => {
-    // console.log(searchObj);
+    const controller = new AbortController();
     if (searchObj) {
-      const controller = new AbortController();
+      // console.log(searchObj);
+
       if (searchObj.type === "city") {
-        console.log("api call", WEATHER_API_KEY);
-        const cityUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchObj.city}&appid=${WEATHER_API_KEY}`;
-        fetch(cityUrl, { signal: controller.signal })
+        // console.log("api call", WEATHER_API_KEY);
+        const URL = `https://api.openweathermap.org/data/2.5/weather?q=${searchObj.city}&appid=${WEATHER_API_KEY}`;
+        fetch(URL, { signal: controller.signal })
+          .then((res) => res.json())
+          .then(setNewData)
+          .catch(console.log);
+      } else if (searchObj.type === "zip") {
+        const URL = `https://api.openweathermap.org/data/2.5/weather?zip=${searchObj.zip},us&appid=${WEATHER_API_KEY}`;
+        fetch(URL, { signal: controller.signal })
+          .then((res) => res.json())
+          .then(setNewData)
+          .catch(console.log);
+      } else if (searchObj.type === "lat/lon") {
+        const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${searchObj.lat}&lon=${searchObj.lon}&appid=${WEATHER_API_KEY}`;
+        fetch(URL, { signal: controller.signal })
           .then((res) => res.json())
           .then(setNewData)
           .catch(console.log);
       }
-      return () => controller.abort();
+    } else {
+      const URL = `https://api.openweathermap.org/data/2.5/weather?q=seattle&appid=${WEATHER_API_KEY}`;
+      fetch(URL, { signal: controller.signal })
+        .then((res) => res.json())
+        .then(setNewData)
+        .catch(console.log);
     }
+    return () => controller.abort();
   }, [searchObj]);
-
-  useEffect(() => {
-    if (!newData.dumby) console.log(newData);
-  }, [newData]);
 
   return (
     <div className="bg-light">

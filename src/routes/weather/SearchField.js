@@ -18,12 +18,6 @@ const SearchField = ({
           value={formData.city}
           changeHandler={changeHandler}
         />
-        {/* <SearchInput
-          name={"state"}
-          placeHolder={"Input State"}
-          value={formData.state}
-          changeHandler={changeHandler}
-        /> */}
       </>
     );
   } else if (searchType === "zip") {
@@ -42,13 +36,13 @@ const SearchField = ({
       <>
         <SearchInput
           name={"lat"}
-          placeHolder={"Input Latitude"}
+          placeHolder={"Input Lat"}
           value={formData.lat}
           changeHandler={changeHandler}
         />
         <SearchInput
           name={"lon"}
-          placeHolder={"Input longitude"}
+          placeHolder={"Input lon"}
           value={formData.lon}
           changeHandler={changeHandler}
         />
@@ -68,17 +62,19 @@ const SearchField = ({
 
   return (
     <div className="d-flex container flex-column flex-sm-row">
+      {/* <span>Search</span> */}
       <select onChange={searchChangeHandler} className="m-3">
-        <option value="">--Search Type--</option>
-        <option value="city">City</option>
-        <option value="zip">Zip Code</option>
-        {/* <option value="lat/lon">Lat & Lon</option> */}
+        {/* <option value="">--Search Type--</option> */}
+        <option value="city">Search by City</option>
+        <option value="zip"> Search by Zip</option>
+        <option value="lat/lon">Search by Lat/Lon</option>
       </select>
       <form
         onSubmit={handleSubmit}
         className="d-flex mt-3 flex-column flex-sm-row"
       >
         {formInputs}
+        <button type="submit" className="d-none"></button>
       </form>
     </div>
   );

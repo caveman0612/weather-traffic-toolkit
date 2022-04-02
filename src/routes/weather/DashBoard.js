@@ -2,28 +2,29 @@ import React, { useEffect, useState } from "react";
 import { BsArrowUp } from "react-icons/bs";
 
 const DashBoard = ({ apiData }) => {
-  const _initialTempState = {
-    type: "metric",
-    metric: <span>{(apiData.main.temp - 273.15).toFixed(0)}&#8451;</span>,
-    imperial: (
-      <span>
-        {(((apiData.main.temp - 273.15) * 9) / 5 + 32).toFixed(0)}&#8457;
-      </span>
-    ),
-  };
+  const [tempType, setTempType] = useState("metric");
+  const rise = new Date(parseInt(apiData.sys.sunrise) * 1000);
+  const set = new Date(parseInt(apiData.sys.sunset) * 1000);
 
-  const [tempData, setTempData] = useState(_initialTempState);
-  useEffect(() => {
-    if (!apiData.dumby) setTempData(_initialTempState);
-  }, [apiData]);
+  function tempControlFunction(temp, tempType) {
+    if (tempType === "metric") {
+      return <span>{(apiData.main.temp - 273.15).toFixed(0)}&#8451;</span>;
+    } else {
+      return (
+        <span>
+          {(((apiData.main.temp - 273.15) * 9) / 5 + 32).toFixed(0)}&#8457;
+        </span>
+      );
+    }
+  }
 
   function handleTempChange(event) {
-    setTempData({ ..._initialTempState, type: event.target.value });
+    setTempType(event.target.value);
   }
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center">The weather in Seattle</h1>
+      <h1 className="text-center">The weather in {apiData.name}</h1>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 gy-5">
         <div className="col border p-4">
           <h2 className="text-center">Temperture</h2>
@@ -32,9 +33,7 @@ const DashBoard = ({ apiData }) => {
               <option value="metric">&#8451;</option>
               <option value="imperial">&#8457;</option>
             </select>
-            <span>
-              {tempData.type === "metric" ? tempData.metric : tempData.imperial}
-            </span>
+            {tempControlFunction(apiData.main.temp, tempType)}
           </div>
         </div>
         <div className="col border p-4 d-flex flex-column align-items-center">
@@ -47,7 +46,7 @@ const DashBoard = ({ apiData }) => {
         </div>
         <div className="col border p-4 d-flex flex-column align-items-center">
           <h2>Wind</h2>
-          <p>{(apiData.wind.speed * 2.237).toFixed(1)} mph</p>
+          <p>{(apiData.wind.speed * 2.237).toFixed(0)} mph</p>
           <span className="ps-1">N</span>
           <div className="d-flex align-items-center">
             <span className="me-2">W</span>
@@ -66,14 +65,24 @@ const DashBoard = ({ apiData }) => {
 
           <span className="ps-1">S</span>
         </div>
-        <div className="col border p-4">
-          <h2 className="text-center">Pressure</h2>
+        <div className="col border p-4 d-flex flex-column align-items-center">
+          <h2 className="">Pressure</h2>
+          <p>{apiData.main.pressure} hPa</p>
         </div>
-        <div className="col border p-4">
-          <h2 className="text-center">Sunrise & Sunset</h2>
+        <div className="col border p-4 d-flex flex-column align-items-center">
+          <h2 className="">Sunrise & Sunset</h2>
+          <span>
+            sunrise - {rise.getHours()}:{rise.getMinutes()}{" "}
+            {rise.getHours() < 12 ? "am" : "pm"}
+          </span>
+          <span>
+            sunset - {set.getHours()}:{set.getMinutes()}{" "}
+            {set.getHours() < 12 ? "am" : "pm"}
+          </span>
         </div>
-        <div className="col border p-4">
-          <h2 className="text-center">Humdity</h2>
+        <div className="col border p-4 d-flex flex-column align-items-center">
+          <h2 className="">Humdity</h2>
+          <p>{apiData.main.humidity}%</p>
         </div>
       </div>
     </div>
