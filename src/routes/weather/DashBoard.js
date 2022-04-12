@@ -8,10 +8,14 @@ const DashBoard = ({ apiData }) => {
 
   function tempControlFunction(temp, tempType) {
     if (tempType === "metric") {
-      return <span>{(apiData.main.temp - 273.15).toFixed(0)}&#8451;</span>;
+      return (
+        <span className="fs-1">
+          {(apiData.main.temp - 273.15).toFixed(0)}&#8451;
+        </span>
+      );
     } else {
       return (
-        <span>
+        <span className="fs-1">
           {(((apiData.main.temp - 273.15) * 9) / 5 + 32).toFixed(0)}&#8457;
         </span>
       );
@@ -26,15 +30,15 @@ const DashBoard = ({ apiData }) => {
     <div className="container mt-5">
       <h1 className="text-center">The weather in {apiData.name}</h1>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 gy-5">
-        <div className="col border p-4">
-          <h2 className="text-center">Temperture</h2>
-          <div className="d-flex justify-content-around">
-            <select onChange={handleTempChange}>
-              <option value="metric">&#8451;</option>
-              <option value="imperial">&#8457;</option>
-            </select>
-            {tempControlFunction(apiData.main.temp, tempType)}
-          </div>
+        <div className="col border p-4 d-flex flex-column align-items-center">
+          <h2 className="mb-3">Temperture</h2>
+          {/* <div className="d-flex flex-column align-items-center"> */}
+          <select onChange={handleTempChange}>
+            <option value="metric">&#8451;</option>
+            <option value="imperial">&#8457;</option>
+          </select>
+          {tempControlFunction(apiData.main.temp, tempType)}
+          {/* </div> */}
         </div>
         <div className="col border p-4 d-flex flex-column align-items-center">
           <h2 className="">Weather</h2>

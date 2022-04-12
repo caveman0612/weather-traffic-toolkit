@@ -9,7 +9,7 @@ const dumbyData = {
       id: 804,
       main: "Clouds",
       description: "overcast clouds",
-      icon: "04d",
+      icon: "03d",
     },
   ],
   base: "stations",
